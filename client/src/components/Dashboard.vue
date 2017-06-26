@@ -1,7 +1,9 @@
 <template>
   <div class="dashboard" v-bind:class="{ loading: isLoading }">
     <div class="head-bar">
-      <button class="button refresh-button" v-on:click="refreshAll"><i class="icon -refresh"></i></button>
+      <button class="button refresh-button" ><i class="icon -house"></i></button>
+      <button class="button refresh-button" ><i class="icon -house"></i></button>
+      <button class="button refresh-button" ><i class="icon -house"></i></button>
     </div>
     <Board v-for="subject in subjects" :key="subject" :subject="subject" />
   </div>
@@ -33,7 +35,6 @@
         this.refreshAll = document.createEvent('Event');
         this.refreshAll.initEvent('refreshAll', true, true);
         document.dispatchEvent(this.refreshAll);
-
       }
     },
     created: function() {
@@ -49,18 +50,27 @@
     height: 100%;
     min-width: 100%;
   }
+  .head-bar h3 {
+    margin: 0;
+  }
   .head-bar {
-    position:fixed;
-    top:0;
-    left:0;
-    width: 100%;
-    height: 50px;
-    background-color: #fafafa;
+    position: fixed;
+    padding: 5px;
+    background-color: #fbfbfb;
+    border-right: 1px solid #f1f1f1;
+    border-left: 1px solid #f1f1f1;
+    border-top: 1px solid #f1f1f1;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 165px;
+    z-index: 99999999;
   }
   .dashboard {
     height: 100%;
-    padding-top: 50px;
     min-width: 100%;
+    background-color: #fafafa;
     position: relative;
     overflow-x: scroll;
     overflow-y: hidden;

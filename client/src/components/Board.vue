@@ -19,6 +19,8 @@
   .board {
     display: inline-block;
     height: 100%;
+    margin-right: 50px;
+    border-right: 1px solid #fafafa;
   }
   .board h3 {
     margin-left: 20px;

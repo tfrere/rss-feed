@@ -9,12 +9,23 @@ const moment = require("moment");
 const htmlToText = require('html-to-text');
 
 const configFile = "./data/config.json";
+const articleCountLimit = 5;
 
 app.use(bodyParser.json());
 app.set('port', (process.env.PORT || 5001));
 app.use(cors());
 
 const config = jsonfile.readFileSync(configFile);
+
+const sanitizeContent = function() {
+  // remove html and limit to 30 words
+  let content = htmlToText.fromString(article.description, {
+    wordwrap: 30
+  });
+  // remove urls
+  content = content.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
+  return content;
+}
 
 app.get('/config', function(req,res) {
     if(config)
@@ -27,18 +38,12 @@ app.get('/feed', function(req,res) {
 
   const feedUrl = req.param("url");
   const domain = "https://query.yahooapis.com/v1/public/yql?format=json&q=";
-  const request = 'SELECT * FROM feednormalizer WHERE output="rss_2.0" AND url ="' + feedUrl + '" LIMIT ' + 5;
+  const request = 'SELECT * FROM feednormalizer WHERE output="rss_2.0" AND url ="' + feedUrl + '"';
   const url = domain + encodeURIComponent(request);
 
   console.log("=========");
   console.log("ROUTE : /feed");
   console.log("ENCODED QUERY URL : " + url);
-
-  // console.log("https://api.github.com/users/tfrere");
-  // console.log('https://randomuser.me/api');
-  // console.log(url);
-  //https://twitrss.me/twitter_user_to_rss/?user=[USERNAME]
-  //http://twitrss.me/twitter_search_to_rss/?term=[SEARCH TERM]
 
   fetch(url)
     .then(response => response.json())
@@ -53,18 +58,18 @@ app.get('/feed', function(req,res) {
           feed.status = "success";
 
           test.map(function(article, i) {
-            let content = htmlToText.fromString(article.description, {
-               wordwrap: 30
-            });
-            content = content.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
-            feed.push({
-              title: article.title,
-              content: content,
-              date: moment(article.date).fromNow(),
-              link: article.link,
-              creator: article.creator,
-              status: article.status
-            });
+            if (i <= articleCountLimit) {
+
+
+              feed.push({
+                title: article.title,
+                content: sanitizeContent(article.content),
+                date: moment(article.date).fromNow(),
+                link: article.link,
+                creator: article.creator,
+                status: article.status
+              });
+            }
             if (test.length == i)
               return feed;
           });

@@ -61,9 +61,9 @@
       let self = this;
       self.update();
       // refreshRate
-      setInterval(function goFaster() {
-        self.update();
-      }, self.feed.refreshRate * 1000);
+      // setInterval(function goFaster() {
+      //   self.update();
+      // }, self.feed.refreshRate * 1000);
       document.addEventListener('refreshAll', this.refresh, false);
     }
   };

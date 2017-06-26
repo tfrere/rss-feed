@@ -1,23 +1,7 @@
 [
   {
-    "title": "design",
+    "title": "UX & Design",
     "feeds": [
-      {
-        "title": "newYahoo",
-        "type": "rss",
-        "refreshRate": "60",
-        "filter": "bla",
-        "url": "http://news.yahoo.com/rss/topstories",
-        "articles": null
-      },
-      {
-        "title": "radio france",
-        "type": "rss",
-        "refreshRate": "300",
-        "filter": "bla",
-        "url": "http://radiofrance-podcast.net/podcast09/rss_16278.xml",
-        "articles": null
-      },
       {
         "title": "tobias ahlin",
         "type": "rss",
@@ -35,17 +19,54 @@
         "articles": null
       },
       {
+        "title": "Dave Gamache",
+        "type": "rss",
+        "refreshRate": "300",
+        "filter": "bla",
+        "url": "http://medium.com/feed/@dhg",
+        "articles": null
+      }
+    ]
+  },
+  {
+    "title": "Culture générale",
+    "feeds": [
+      {
+        "title": "Monde diplo",
+        "type": "rss",
+        "refreshRate": "300",
+        "filter": "bla",
+        "url": "http://www.monde-diplomatique.fr/rss/",
+        "articles": null
+      },
+      {
         "title": "arte",
         "type": "rss",
         "refreshRate": "20",
         "filter": "bla",
         "url": "http://feeds.feedburner.com/ArteProgrammeTv",
         "articles": null
+      },
+      {
+        "title": "radio france",
+        "type": "rss",
+        "refreshRate": "300",
+        "filter": "bla",
+        "url": "http://radiofrance-podcast.net/podcast09/rss_16278.xml",
+        "articles": null
+      },
+      {
+        "title": "thinkerview",
+        "type": "rss",
+        "refreshRate": "10",
+        "filter": "bla",
+        "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCQgWpmt02UtJkyO32HGUASQ",
+        "articles": null
       }
     ]
   },
   {
-    "title": "economy",
+    "title": "Technologies & IA",
     "feeds": [
       {
         "title": "techcrunch",
@@ -53,27 +74,6 @@
         "refreshRate": "20",
         "filter": "bla",
         "url": "http://feeds.feedburner.com/TechCrunch/",
-        "articles": null
-      },
-      {
-        "title": "googleresearchblog",
-        "type": "rss",
-        "refreshRate": "300",
-        "filter": "bla",
-        "url": "http://feeds.feedburner.com/blogspot/gJZg",
-        "articles": null
-      }
-    ]
-  },
-  {
-    "title": "lead",
-    "feeds": [
-      {
-        "title": "thinkerview",
-        "type": "rss",
-        "refreshRate": "10",
-        "filter": "bla",
-        "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCQgWpmt02UtJkyO32HGUASQ",
         "articles": null
       },
       {
