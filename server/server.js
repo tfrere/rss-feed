@@ -52,10 +52,6 @@ app.get('/feed', function(req,res) {
           const test = data.query.results.rss.channel.item;
           feed.status = "success";
 
-          var text = htmlToText.fromString('<h1>Hello World</h1>', {
-             wordwrap: 130
-          });
-          //console.log(text);
           test.map(function(article, i) {
             let content = htmlToText.fromString(article.description, {
                wordwrap: 30
@@ -90,7 +86,7 @@ app.get('/feed', function(req,res) {
       if (feed.status == "success")
         res.status(200).send(feed);
       else
-        res.status(500).send("This feed in not supported by YQL");
+        res.status(500).send("YQL doesn't suppor this feed");
     })
     .catch(error => {
       console.log(error);

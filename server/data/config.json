@@ -5,7 +5,7 @@
       {
         "title": "newYahoo",
         "type": "rss",
-        "refreshRate": "30",
+        "refreshRate": "60",
         "filter": "bla",
         "url": "http://news.yahoo.com/rss/topstories",
         "articles": null
@@ -13,7 +13,7 @@
       {
         "title": "radio france",
         "type": "rss",
-        "refreshRate": "30",
+        "refreshRate": "300",
         "filter": "bla",
         "url": "http://radiofrance-podcast.net/podcast09/rss_16278.xml",
         "articles": null
@@ -21,7 +21,7 @@
       {
         "title": "tobias ahlin",
         "type": "rss",
-        "refreshRate": "30",
+        "refreshRate": "300",
         "filter": "bla",
         "url": "http://tobiasahlin.com/feed/",
         "articles": null
@@ -29,7 +29,7 @@
       {
         "title": "graphism",
         "type": "rss",
-        "refreshRate": "30",
+        "refreshRate": "300",
         "filter": "bla",
         "url": "http://feeds.feedburner.com/GraphismeInteractivit",
         "articles": null
@@ -37,7 +37,7 @@
       {
         "title": "arte",
         "type": "rss",
-        "refreshRate": "30",
+        "refreshRate": "20",
         "filter": "bla",
         "url": "http://feeds.feedburner.com/ArteProgrammeTv",
         "articles": null
@@ -50,7 +50,7 @@
       {
         "title": "techcrunch",
         "type": "rss",
-        "refreshRate": "30",
+        "refreshRate": "20",
         "filter": "bla",
         "url": "http://feeds.feedburner.com/TechCrunch/",
         "articles": null
@@ -58,7 +58,7 @@
       {
         "title": "googleresearchblog",
         "type": "rss",
-        "refreshRate": "30",
+        "refreshRate": "300",
         "filter": "bla",
         "url": "http://feeds.feedburner.com/blogspot/gJZg",
         "articles": null
@@ -71,7 +71,7 @@
       {
         "title": "thinkerview",
         "type": "rss",
-        "refreshRate": "30",
+        "refreshRate": "10",
         "filter": "bla",
         "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCQgWpmt02UtJkyO32HGUASQ",
         "articles": null
@@ -79,7 +79,7 @@
       {
         "title": "googleresearchblog",
         "type": "rss",
-        "refreshRate": "30",
+        "refreshRate": "300",
         "filter": "bla",
         "url": "http://feeds.feedburner.com/blogspot/gJZg",
         "articles": null

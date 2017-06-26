@@ -24,7 +24,6 @@
     methods: {
       update: function() {
         let self = this;
-        console.log(124);
         configProvider.getConfig(function(data) {
           self.subjects = data;
           self.isLoading = false;
@@ -33,7 +32,6 @@
   		refreshAll: function() {
         this.refreshAll = document.createEvent('Event');
         this.refreshAll.initEvent('refreshAll', true, true);
-        console.log(this.refreshAll);
         document.dispatchEvent(this.refreshAll);
 
       }

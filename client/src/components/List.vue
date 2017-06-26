@@ -25,7 +25,6 @@
     return str;
   }
 
-
   export default {
     name: 'list',
     props: ['feed'],
@@ -53,14 +52,18 @@
         });
         console.log(param);
         feedProvider.getFeed(param, function(data) {
-          console.log("Feed -> ", data);
           self.content = data;
           self.isLoading = false;
         });
       }
     },
     created: function() {
-      this.update();
+      let self = this;
+      self.update();
+      // refreshRate
+      setInterval(function goFaster() {
+        self.update();
+      }, self.feed.refreshRate * 1000);
       document.addEventListener('refreshAll', this.refresh, false);
     }
   };
