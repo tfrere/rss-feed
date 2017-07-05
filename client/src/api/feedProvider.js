@@ -8,6 +8,7 @@ export default {
       callback(data);
     }).catch(function(err) {
       console.log("Error -> ", err);
+      callback("error");
     });
   }
 }

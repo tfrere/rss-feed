@@ -1,11 +1,6 @@
 <template>
   <div class="dashboard" v-bind:class="{ loading: isLoading }">
-    <div class="head-bar">
-      <button class="button refresh-button" ><i class="icon -house"></i></button>
-      <button class="button refresh-button" ><i class="icon -house"></i></button>
-      <button class="button refresh-button" ><i class="icon -house"></i></button>
-    </div>
-    <Board v-for="subject in subjects" :key="subject" :subject="subject" />
+    <Board v-for="board in boards" :key="board" :config="boards" :board="board" />
   </div>
 </template>
 
@@ -20,14 +15,34 @@
     data: () => {
       return {
         isLoading: true,
-        subjects: null
+        boards: null
       }
     },
+    sockets: {
+      connect: function() {
+        console.log('socket connected')
+      },
+      // listIsUpdated: function(val) {
+      //   let self = this;
+      //   self.boards.map(function(board) {
+      //     if (board.title == val.board) {
+      //       board.feeds.map(function(feed) {
+      //         if (feed.title)
+      //       });
+      //     }
+      //   });
+      //   if (this.feed && val.feedName == this.feed.title && val.board == this.feed.board)
+      //     this.content.unshift(val);
+      // }
+    },
     methods: {
+      toogleEditMode: function() {
+        this.isEditMode = !this.isEditMode;
+      },
       update: function() {
         let self = this;
         configProvider.getConfig(function(data) {
-          self.subjects = data;
+          self.boards = data;
           self.isLoading = false;
         });
       },
@@ -75,6 +90,9 @@
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
+  }
+  .dashboard * {
+    user-select: none;
   }
   .dashboard.loading {
     overflow: hidden;

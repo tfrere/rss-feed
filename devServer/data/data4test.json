@@ -3,7 +3,7 @@
     "title": "design",
     "feeds": [
       {
-        "title": "tobias ahlin",
+        "title": "tobiasahlin",
         "board": "design",
         "type": "rss",
         "refreshRate": "300",
@@ -23,7 +23,7 @@
         "articles": null
       },
       {
-        "title": "Mdo",
+        "title": "mdo",
         "board": "design",
         "type": "rss",
         "refreshRate": "300",
@@ -33,7 +33,7 @@
         "articles": null
       },
       {
-        "title": "Dave Gamache",
+        "title": "davegamache",
         "board": "design",
         "type": "rss",
         "refreshRate": "300",
@@ -48,7 +48,7 @@
     "title": "culture",
     "feeds": [
       {
-        "title": "Monde diplo",
+        "title": "mondediplo",
         "type": "rss",
         "board": "culture",
         "refreshRate": "300",
@@ -68,7 +68,7 @@
         "articles": null
       },
       {
-        "title": "radio france",
+        "title": "radiofrance",
         "type": "rss",
         "board": "culture",
         "refreshRate": "300",
@@ -88,7 +88,7 @@
         "articles": null
       },
       {
-        "title": "thinkerview",
+        "title": "nytimes",
         "type": "rss",
         "board": "culture",
         "refreshRate": "10",

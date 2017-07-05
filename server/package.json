@@ -8,7 +8,7 @@
     "start": "node server.js",
     "dev": "echo 'run dev' & npm start",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "nodemon": "./node_modules/nodemon/bin/nodemon.js --config ./nodemon.config.json --exec npm run dev "
+    "nodemon": "./node_modules/nodemon/bin/nodemon.js -e js --config ./nodemon.config.json --exec npm run dev "
   },
   "dependencies": {
     "body-parser": "^1.14.1",
@@ -23,6 +23,7 @@
     "node-cron": "^1.2.0",
     "node-fetch": "^1.7.1",
     "request": "^2.81.0",
+    "sentencer": "^0.1.5",
     "yql-node": "^0.2.1"
   },
   "devDependencies": {
