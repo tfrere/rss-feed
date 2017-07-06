@@ -104,7 +104,7 @@ io.on('connection', function(socket) {
         const item = generateItem(publishDate);
         socket.emit('listIsUpdated', item);
 
-      }, feed.refreshRate * 1000);
+      }, feed.refreshRate * 100);
     });
   });
 

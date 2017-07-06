@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <form class="content">
     <fieldset v-bind:class="{'-has-tag': errors.has('title'), '-has-icon -large': true}">
       <i class="icon -lock"></i>
       <label>Title</label>
@@ -17,7 +17,7 @@
       </div>
     </fieldset>
     <button :disabled="errors.any()" v-on:click="postFeed" class="button -success">Validate</button>
-  </div>
+  </form>
 </template>
 
 <script>
