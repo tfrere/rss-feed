@@ -44,7 +44,15 @@
           self.isClosing = false;
         }, 600);
       }
-    }
+    },
+    // ready: function () {
+    //   document.addEventListener("keydown", (e) => {
+    //     console.log(e.keyCode);
+    //     if (this.isOpen && e.keyCode == 27) {
+    //       this.close();
+    //     }
+    //   });
+    // }
   };
 </script>
 

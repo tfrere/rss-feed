@@ -1,19 +1,18 @@
 /* eslint-disable */
 
 export default {
-  getConfig (callback) {
-    fetch("http://localhost:5001/config").then(function(response) {
+  getBoards (callback) {
+    fetch("http://localhost:5001/boards").then(function(response) {
       return response.json();
     }).then(function(data) {
-      console.log(data);
       callback(data);
     }).catch(function(err) {
       console.log("Error -> ", err);
     });
   },
-  postConfig (data, callback) {
+  postBoards (data, callback) {
     fetch(
-      "http://localhost:5001/config",
+      "http://localhost:5001/boards",
       {
         method: "POST",
         headers: {

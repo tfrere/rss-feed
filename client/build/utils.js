@@ -9,6 +9,13 @@ exports.assetsPath = function (_path) {
   return path.posix.join(assetsSubDirectory, _path)
 }
 
+let scssOptions = {
+  includePaths: [
+    './src/style'
+  ],
+  data: '@import "./src/style/style";'
+}
+
 exports.cssLoaders = function (options) {
   options = options || {}
 
@@ -50,7 +57,7 @@ exports.cssLoaders = function (options) {
     postcss: generateLoaders(),
     less: generateLoaders('less'),
     sass: generateLoaders('sass', { indentedSyntax: true }),
-    scss: generateLoaders('sass'),
+    scss: generateLoaders('sass', scssOptions),
     stylus: generateLoaders('stylus'),
     styl: generateLoaders('stylus')
   }

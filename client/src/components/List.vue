@@ -1,30 +1,45 @@
 <template>
-  <div class="column-wrapper">
+  <div v-bind:class="{ 'column-wrapper': true, 'column-wrapper--double': feed.isDouble}">
     <div class="column">
       <div class="list-head">
-        <h5 class="list-head-title">
-          {{ feed.title }}
-        </h5>
+        <TitleEdit type="feed" :ref="feed" :validate="(newValue) => { editFeed(feed, newValue) }" :original="feed.title" :value="feed.title">
+          <h5 class="list-head-title" v-on:click="() => { update(feed.title) }">
+            {{ feed.title }}
+          </h5>
+        </TitleEdit>
         <div class="list-head-interaction">
-          <i class="icon -cross list-head-interaction-icon" v-on:click="deleteFeed"/>
-          <i class="icon -cog list-head-interaction-icon" v-on:click="openModal"/>
+          <Button class="button -no-border list-head-interaction-button" :click="() => { deleteFeed(feed) }">
+            <i class="icon -cross"/>
+          </Button>
+          <FeedEdit :feed="feed"/>
         </div>
      </div>
        <svg class="bg" width="250" height="1">
          <path :d="headerPath" fill="rgba(0,0,0,0.05)"></path>
        </svg>
        <!-- :style="contentPosition" -->
-       <ul :style="contentPosition" @mousedown="startDrag" @touchstart="startDrag"
+        <ul v-if="content && content.length > 0" :style="contentPosition" @mousedown="startDrag" @touchstart="startDrag"
        @mousemove="onDrag" @touchmove="onDrag"
        @mouseup="stopDrag" @touchend="stopDrag" @mouseleave="stopDrag" class="list" v-bind:class="{ loading: isLoading, error: isError }">
-         <Item v-for="item in content" :key="item" :item="item" />
+          <transition-group v-if="!isError" name="list-complete">
+            <Item v-for="item in content" :key="item" :isAuthor="feed.isAuthor" :isDesc="feed.isDesc" :isImage="feed.isImage" :item="item" />
+          </transition-group>
          <li v-if="isError" class="item item--error -headless">
            <h3 class="item--error-title">Error</h3>
          </li>
+          <!-- <VuePerfectScrollbar class="list scroll-area" v-once :feed="feed" :settings="settings">
+           <Item v-if="!isError" v-for="item in content" :key="item" :isAuthor="feed.isAuthor" :isDesc="feed.isDesc" :isImage="feed.isImage" :item="item" />
+           <li v-if="isError" class="item item--error -headless">
+             <h3 class="item--error-title">Error</h3>
+           </li>
+          </VuePerfectScrollbar> -->
        </ul>
+       <div v-if="content && content.length == 0">
+         Pas d'article
+       </div>
     </div>
     <Modal ref="modal" :open="openModal">
-      <FeedForm ref="feedForm" reqType="put" :config="config" :feed="feed" :close="closeModal"/>
+      <FeedAdd ref="feedForm" reqType="put" :boards="boards" :feed="feed" :close="closeModal"/>
     </Modal>
   </div>
 </template>
@@ -35,7 +50,7 @@
   import Vue from 'vue';
   import dynamics from 'dynamics.js';
   import feedProvider from '../api/feedProvider.js';
-  import configProvider from '../api/configProvider.js';
+  import boardsProvider from '../api/boardsProvider.js';
   import jsonToParams from '../helpers/jsonToParams.js';
 
   const width = 250;
@@ -43,7 +58,7 @@
 
   export default {
     name: 'list',
-    props: ['feed', 'config'],
+    props: ['feed'],
     data: () => {
       return {
         content: null,
@@ -53,10 +68,21 @@
         // quadratic bezier control point
         c: { x: height, y: height },
         // record drag start point
-        start: { x: 0, y: 0 }
+        start: { x: 0, y: 0 },
+        settings: {
+          maxScrollbarLength: 60
+        }
       }
     },
+    filters: {
+     limit: function(arr, limit) {
+       return arr.slice(0, Number(limit))
+     }
+    },
     computed: {
+      boards() {
+        return this.$store.getters.boards
+      },
       headerPath: function () {
         return 'M0,0 L' + width + ',0 ' + width + ','+ height +
           'Q' + this.c.x + ',' + this.c.y +
@@ -72,11 +98,24 @@
     },
     sockets: {
       listIsUpdated: function(val) {
-        if (this.feed && val.feedName == this.feed.title && val.board == this.feed.board)
+        if (this.content && this.content.length > 0 && this.feed && val.feedName == this.feed.title && val.board == this.feed.board) {
+          val.isNew = true;
           this.content.unshift(val);
+          //this.update();
+          console.log(this.content.length);
+          if(this.content.length > 10) {
+            this.content.pop();
+          }
+        }
       }
     },
     methods: {
+      editFeed: function(feed, newValue) {
+        console.log("edit", feed);
+        feed.title = newValue;
+        this.update();
+        this.$store.dispatch('editFeed', feed);
+      },
       startDrag: function (e) {
         e = e.changedTouches ? e.changedTouches[0] : e
         this.dragging = true
@@ -112,27 +151,14 @@
       },
       pause: function() {
       },
-      deleteFeed: function() {
+      deleteFeed: function(feed) {
         let self = this;
-        self.config.map(function(board) {
-          if(board.title == self.feed.board)
-          {
-            board.feeds.map(function(feed, i) {
-              if (feed.title == self.feed.title) {
-                board.feeds.splice(i, 1);
-                configProvider.putConfig(self.config, function(data) {
-                  console.log("Feed -> Deleted normally");
-                });
-              }
-            });
-          }
-        });
+        self.$store.dispatch('removeFeed', feed);
       },
       openModal: function() {
         this.$refs.modal.openModal();
       },
       closeModal: function() {
-        console.log("closeCalledFromList");
         this.$refs.modal.closeModal();
       },
       update: function() {
@@ -140,11 +166,11 @@
         self.isLoading = true;
         self.isError = false;
 
-
         let param = jsonToParams({
           type: self.feed.type,
           url: self.feed.url
         });
+
         feedProvider.getFeed(param, function(data) {
           //console.log(data);
           if(data != "error") {
@@ -167,73 +193,4 @@
 
 <style lang="scss">
 
-  // DRAG & DROP SVG
-  .bg {
-    position: absolute;
-    display: block;
-    overflow: visible!important;
-    z-index: 998;
-    top: 75px;
-  }
-
-  .column-wrapper {
-    display: inline-block;
-    width: 250px;
-    height: 100%;
-    position: relative;
-  }
-  .column {
-    height: 100%;
-  }
-  .column h5 {
-    margin-left: 20px;
-    margin-bottom: 20px;
-  }
-  .list-wrapper {
-    height: 100%;
-  }
-  .list-head {
-  }
-  .list-head-interaction {
-    float:right;
-    margin-top: 8px;
-    margin-right: 4px;
-    display: inline;
-  }
-  .list-head-title {
-    width: 70%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-block;
-    z-index: 999;
-    position: relative;
-  }
-  .list-head-interaction-icon {
-    font-size: 2rem;
-    color: lightgrey;
-    cursor: pointer;
-    z-index: 999;
-    opacity: 0;
-    position: relative;
-  }
-  .column {
-    &:hover .list-head-interaction-icon {
-      opacity: 1;
-    }
-  }
-  .list .item--error {
-    height: 100%;
-    .item--error-title {
-      vertical-align: middle;
-      line-height: 75vh;
-      text-align: center;
-      margin: 0;
-    }
-  }
-  .list {
-    border-right: 1px solid #bbb;
-    height: 100%;
-    white-space: normal;
-    overflow-y: scroll;
-  }
 </style>

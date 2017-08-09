@@ -96,6 +96,16 @@
         "isImage": true,
         "url": "http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
         "articles": null
+      },
+      {
+        "title": "contrepoint",
+        "type": "rss",
+        "board": "tech",
+        "refreshRate": "300",
+        "filter": null,
+        "isImage": true,
+        "url": "https://www.contrepoints.org/feed",
+        "articles": null
       }
     ]
   },

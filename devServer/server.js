@@ -2,13 +2,16 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const jsonfile = require('jsonfile');
 const moment = require("moment");
-const sentencer = require("sentencer");
-const generateName = require('node-random-name');
+const fetch = require("node-fetch");
 
 const tools = require('./helpers/tools.js');
+const devTools = require('./helpers/dev-tools.js');
 
 const configFile = "./data/config.json";
+const boardsFile = "./data/boards.json";
 let config = jsonfile.readFileSync(configFile);
+let boards = jsonfile.readFileSync(boardsFile);
+
 const articleCountLimit = 10;
 
 let app = require('express')();
@@ -20,72 +23,7 @@ app.use(bodyParser.json());
 app.set('port', 5001);
 app.use(cors());
 
-
-const generateBoard = function() {
-  return config[tools.randomIntFromInterval(0, config.length - 1)].title;
-}
-
-const generateFeedName = function(boardName) {
-  for(var i = 0; i < config.length; i++) {
-    if (config[i].title == boardName) {
-      return config[i].feeds[tools.randomIntFromInterval(0, config[i].feeds.length - 1)].title;
-    }
-  }
-}
-
-const generateTitle = function() {
-  const titles = [
-    sentencer.make("This title has {{ a_noun }} and {{ an_adjective }} {{ noun }} in it."),
-    sentencer.make("Drunk, this guy has {{ a_noun }} with {{ an_adjective }} {{ noun }}."),
-    sentencer.make("Someone who's got {{ a_noun }} with a {{ an_adjective }} {{ noun }}."),
-    sentencer.make("Another one, he's {{ an_adjective }}."),
-    sentencer.make("A guy, he's {{ an_adjective }}."),
-    sentencer.make("I'm out of {{ an_adjective }} {{ noun }}, please help me."),
-    sentencer.make("These {{ noun }}s are the {{ an_adjective }} {{ noun }}.")
-  ];
-  return titles[tools.randomIntFromInterval(0,titles.length - 1)];
-}
-
-const generateItem = function(publishDate) {
-  const board = generateBoard();
-  return {
-    title: generateTitle(),
-    title: generateTitle(),
-    content: generateTitle(),
-    image: null,
-    date: moment(publishDate).fromNow(),
-    isFreshContent: tools.isFreshContent(publishDate),
-    link: "#",
-    creator: generateName(),
-    board: board,
-    feedName: generateFeedName(board),
-    status: "success"
-  };
-}
-
-const generateFeed = function() {
-  let feed = [];
-  const numberOfItems = tools.randomIntFromInterval(5, 15);
-
-  for(var i = 0; i <= numberOfItems; i++) {
-    const newDate = new Date();
-    const publishDate = moment(newDate).add(-i * 2, 'day');
-    feed.push(generateItem(publishDate));
-  }
-
-  return feed;
-}
-
-const generateFeeds = function(numberOfFeeds) {
-  let feeds = [];
-
-  for(var i = 0; i <= numberOfFeeds; i++)
-    feeds.push(generateFeed());
-
-  return feeds;
-}
-
-const randomFeeds = generateFeeds(20);
+const randomFeeds = devTools.generateFeeds(boards, 20);
 
 // ===================
 // FEED SOCKET
@@ -95,13 +33,13 @@ io.on('connection', function(socket) {
 
   console.log("socket connected");
 
-  config.map(function(board) {
+  boards.map(function(board) {
     board.feeds.map(function(feed) {
       setInterval(function () {
 
         const newDate = new Date();
         const publishDate = moment(newDate).add(-50, 'second');
-        const item = generateItem(publishDate);
+        const item = devTools.generateItem(boards, publishDate);
         socket.emit('listIsUpdated', item);
 
       }, feed.refreshRate * 100);
@@ -123,10 +61,80 @@ io.on('connection', function(socket) {
 // FEED ROUTE
 // ===================
 
+
 app.get('/feed', function(req,res) {
   const index = tools.hashFromString(req.param("url"));
   res.status(200).send(randomFeeds[index % 2]);
 });
+//
+// app.get('/feed', function(req,res) {
+// 
+//   const feedUrl = req.param("url");
+//   const domain = "https://query.yahooapis.com/v1/public/yql?format=json&q=";
+//   const request = 'SELECT * FROM feednormalizer WHERE output="rss_2.0" AND url ="' + feedUrl + '"';
+//   const url = domain + encodeURIComponent(request);
+//
+//   fetch(url)
+//   .then(response => response.json())
+//   .then(data => {
+//
+//     console.log("=========");
+//     console.log("ROUTE : /feed");
+//     console.log("URL : " + feedUrl);
+//
+//     let feed = [];
+//     // if YQL is up
+//     if (data.query && data.query.results) {
+//       // if YQL is responding correcly
+//       if (data.query.results.rss && data.query.results.rss.channel) {
+//
+//         const articles = data.query.results.rss.channel.item;
+//         feed.status = "success";
+//         console.log(articles);
+//         articles.map(function(article, i) {
+//           if (i <= articleCountLimit) {
+//             // console.log(1);
+//             feed.push({
+//               title: article.title,
+//               content: tools.sanitizeContent(article.description),
+//               image: tools.getFirstImageUrl(article.description),
+//               date: moment(article.date).fromNow(),
+//               isFreshContent: tools.isFreshContent(article.date),
+//               link: article.link,
+//               creator: article.creator,
+//               status: article.status
+//             });
+//           }
+//           if (articles.length == i) {
+//             return feed;
+//           }
+//         });
+//
+//         console.log("RESPONSE : 200\n=========\n");
+//       }
+//       else {
+//         feed.status = "error";
+//         console.log("RESPONSE : 500 - YQL doesn't suppor this feed\n=========\n");
+//       }
+//     }
+//     else {
+//       feed.status = "error";
+//       console.log("RESPONSE : 500 - YQL doesn't suppor this feed\n=========\n");
+//     }
+//     return feed;
+//   })
+//   .then(feed => {
+//     console.log(feed);
+//     if (feed.status == "success")
+//       res.status(200).send(feed);
+//     else
+//       res.status(500).send("YQL doesn't suppor this feed");
+//   })
+//   .catch(error => {
+//     console.log("Timeout ou fetch error");
+//     //console.log(error);
+//   });
+// });
 
 // ===================
 // CONFIG ROUTE
@@ -140,14 +148,34 @@ app.get('/config', function(req,res) {
 });
 
 app.post('/config', function(req,res) {
-    console.log(req.body);
     if(req.body) {
       config = req.body;
       jsonfile.writeFileSync(configFile, req.body);
-      return res.status(200).send("The config has been updated correctly !");
+      return res.status(200);
     }
     else
       console.log("The config file is not correct.");
+});
+
+// ===================
+// BOARDS ROUTE
+// ===================
+
+app.get('/boards', function(req,res) {
+    if(boards)
+      return res.status(200).send(boards);
+    else
+      console.log("No boards file.");
+});
+
+app.post('/boards', function(req,res) {
+    if(req.body) {
+      boards = req.body;
+      jsonfile.writeFileSync(boardsFile, req.body);
+      return res.status(200);
+    }
+    else
+      console.log("The board file is not correct.");
 });
 
 // ===================

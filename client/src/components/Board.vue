@@ -1,16 +1,17 @@
 
 <template>
   <div class="board">
-    <header class="board-header">
-      <h3 class="board-header-title">{{ board.title }}</h3>
-      <i v-on:click="openModal" class="icon -plus-square board-header-icon"/>
-    </header>
-    <div class="list-wrapper">
-      <List v-for="feed in board.feeds" :key="feed" :config="config" :feed="feed" />
+    <FeedAdd />
+    <div v-if="activeBoard &&  activeBoard.feeds && activeBoard.feeds.length == 0" class="no-board">
+      <div class="no-board-content">
+        <i class="icon -clipboard-empty no-board-content-icon"/>
+        <p class="no-board-content-text">Vous n'avez pas encore de feed pour cette board</p>
+      </div>
     </div>
-    <Modal ref="addFeedModal" :open="openModal">
-      <FeedForm reqType="post" :config="config" :close="closeModal"/>
-    </Modal>
+    <List v-if="activeBoard && activeBoard.feeds && activeBoard.feeds.length > 0" v-for="(feed, index) in activeBoard.feeds" :key="feed" :feed="feed" />
+    <!-- <draggable v-if="activeBoard && activeBoard.feeds.length > 0" class="list-wrapper" :options="{handle: '.list-head-title'}" v-model="feeds" @start="drag=true" @end="drag=false">
+    </draggable> -->
+    <div class="board-background"></div>
   </div>
 </template>
 
@@ -18,7 +19,31 @@
   /* eslint-disable */
   export default {
     name: 'board',
-    props: ['board', 'config'],
+    data: () => {
+      return {
+        isDraggable: false
+      }
+    },
+    computed: {
+      feeds: {
+        get() {
+          return this.$store.getters.activeBoard.feeds;
+        },
+        set(value) {
+          console.log("feed move", value);
+          // i can't update correctly without setting the value passing by the getter
+          // wtf
+          this.$store.getters.activeBoard.feeds = value;
+          this.$store.dispatch('setFeeds', value);
+        }
+      },
+      activeBoard() {
+        return this.$store.getters.activeBoard;
+      },
+      config() {
+          return this.$store.getters.config
+      },
+    },
     methods: {
       openModal: function() {
         this.$refs.addFeedModal.openModal();
@@ -26,36 +51,13 @@
       closeModal: function() {
         this.$refs.addFeedModal.closeModal();
       }
+    },
+    created: function() {
+      console.log(this.activeBoard);
     }
   };
 </script>
 
 <style compile="scss">
-  .board {
-    display: inline-block;
-    height: 100%;
-    margin-right: 50px;
-    margin-left: 50px;
-    border-right: 1px solid #fafafa;
-  }
-  .board-header {
-  }
-  .board-header-title {
-    display: inline-block;
-  }
-  .board-header-icon {
-    font-size: 2rem;
-    margin-top: 8px;
-    margin-left: 15px;
-    color: lightgrey;
-    cursor: pointer;
-    opacity: 0.8;
-    &:hover {
-      opacity: 1;
-    }
-  }
-  .board h3 {
-    margin-left: 20px;
-    margin-top: 20px;
-  }
+
 </style>

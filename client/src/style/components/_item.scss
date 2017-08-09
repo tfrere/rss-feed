@@ -1,0 +1,84 @@
+@keyframes appear {
+  0% {
+    opacity: 0;
+    transform: translateX(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}
+
+.list {
+  padding: 0 10px;
+  border: none;
+}
+
+.color-label {
+  width: 15px;
+  height: 15px;
+  margin-top: 5px;
+  margin-right: 10px;
+  border-radius: 20px;
+  overflow: hidden;
+  float: left;
+  background-color: red;
+}
+
+.list .item {
+  background-color: rgba(0, 0, 0, 0);
+  margin-bottom: 10px;
+  box-shadow: none;
+  transition: box-shadow .25s ease-in;
+  z-index: 100000001;
+  animation: appear .3s ease;
+}
+.list .item:hover {
+  box-shadow: 0 1.5px 4px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
+}
+.list .item .content {
+  display: inline;
+}
+
+.color-label.fresh {
+}
+
+.color-label.new {
+}
+
+.list .item.fresh .color-label {
+  background-color: orange;
+}
+
+.list .item.new .color-label {
+  background-color: green;
+}
+
+.title {
+  font-weight: bold;
+  color: red;
+  user-select: none;
+  width: 84%;
+}
+
+.date {
+  color: rgba(0,0,0,0.3);
+  float: right;
+}
+
+.list img {
+    display: block;
+    max-width:100%;
+    width: auto;
+    height: auto;
+}
+
+.item.item--monoline {
+
+}
+
+.item .creator {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  color: grey;
+}
