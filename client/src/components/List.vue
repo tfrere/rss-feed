@@ -3,7 +3,7 @@
     <div class="column">
       <div class="list-head">
         <TitleEdit type="feed" :ref="feed" :validate="(newValue) => { editFeed(feed, newValue) }" :original="feed.title" :value="feed.title">
-          <h5 class="list-head-title" v-on:click="() => { update(feed.title) }">
+          <h5 class="list-head-title">
             {{ feed.title }}
           </h5>
         </TitleEdit>
@@ -21,9 +21,8 @@
         <ul v-if="content && content.length > 0" :style="contentPosition" @mousedown="startDrag" @touchstart="startDrag"
        @mousemove="onDrag" @touchmove="onDrag"
        @mouseup="stopDrag" @touchend="stopDrag" @mouseleave="stopDrag" class="list" v-bind:class="{ loading: isLoading, error: isError }">
-          <transition-group v-if="!isError" name="list-complete">
-            <Item v-for="item in content" :key="item" :isAuthor="feed.isAuthor" :isDesc="feed.isDesc" :isImage="feed.isImage" :item="item" />
-          </transition-group>
+         <Item v-if="!isError" v-for="item in content" :key="item" :isAuthor="feed.isAuthor" :isDesc="feed.isDesc" :isImage="feed.isImage" :item="item" />
+
          <li v-if="isError" class="item item--error -headless">
            <h3 class="item--error-title">Error</h3>
          </li>
@@ -186,6 +185,7 @@
     },
     created: function() {
       let self = this;
+      console.log("list-created");
       self.update();
     }
   };

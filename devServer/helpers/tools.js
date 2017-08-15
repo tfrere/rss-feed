@@ -34,5 +34,13 @@ module.exports = {
     else
       return false;
   },
-  randomIntFromInterval: function(min,max) { return Math.floor(Math.random(23)*(max-min+1)+min); }
+  randomIntFromInterval: function(min,max) { return Math.floor(Math.random(23)*(max-min+1)+min); },
+  sanitizeContent: function(content) {
+    let newContent = htmlToText.fromString(content, {
+      wordwrap: 30
+    });
+    const regex = /(?:https?|ftp):\/\/[\n\S]+/g;
+    newContent = content.replace(regex, '');
+    return newContent;
+  }
 };

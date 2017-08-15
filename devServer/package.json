@@ -15,11 +15,13 @@
     "cors": "^2.7.1",
     "express": "^4.13.3",
     "html-to-text": "^3.3.0",
+    "htmlparser2": "^3.9.2",
     "jsonfile": "^2.3.1",
     "moment": "^2.18.1",
     "node-fetch": "^1.7.1",
     "node-random-name": "^1.0.1",
     "nodemon": "^1.11.0",
+    "parse-http-header": "^1.0.0",
     "request": "^2.81.0",
     "sentencer": "^0.1.5",
     "socket.io": "^2.0.3"

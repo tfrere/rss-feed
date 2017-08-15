@@ -6,7 +6,7 @@
     <Modal ref="editModal" :open="openEditModal" :close="closeEditModal">
       <div class="content">
         <h5>ConfigModal</h5>
-        <p>isUserNew: {{config.isUserNew}}<br/>activeBoard: {{config.activeBoard}}<br/>lang: {{config.lang}}<br/>apiKeys: {{config.apiKeys}}</p>
+        <p>isUserNew: {{config.isUserNew}}<br/>activeBoard: {{config.activeBoard}}<br/>lang: {{config.lang}}<br/>apiKeys: {{config.apiKeys}} <br/>articleCountLimift: {{config.articleCountLimit}}</p>
         <Button class="button" :click="() => { editConfig(config) }">
           <span>Oui</span>
         </Button>

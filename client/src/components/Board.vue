@@ -8,9 +8,9 @@
         <p class="no-board-content-text">Vous n'avez pas encore de feed pour cette board</p>
       </div>
     </div>
-    <List v-if="activeBoard && activeBoard.feeds && activeBoard.feeds.length > 0" v-for="(feed, index) in activeBoard.feeds" :key="feed" :feed="feed" />
-    <!-- <draggable v-if="activeBoard && activeBoard.feeds.length > 0" class="list-wrapper" :options="{handle: '.list-head-title'}" v-model="feeds" @start="drag=true" @end="drag=false">
-    </draggable> -->
+    <draggable v-if="activeBoard && activeBoard.feeds.length > 0" class="list-wrapper" :options="{handle: '.list-head'}" v-model="feeds" @start="drag=true" @end="drag=false">
+      <List v-if="activeBoard && activeBoard.feeds && activeBoard.feeds.length > 0" v-for="(feed, index) in activeBoard.feeds" :key="feed" :feed="feed" />
+    </draggable>
     <div class="board-background"></div>
   </div>
 </template>
@@ -32,7 +32,7 @@
         set(value) {
           console.log("feed move", value);
           // i can't update correctly without setting the value passing by the getter
-          // wtf
+          //
           this.$store.getters.activeBoard.feeds = value;
           this.$store.dispatch('setFeeds', value);
         }
