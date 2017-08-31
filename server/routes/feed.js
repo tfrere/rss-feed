@@ -45,7 +45,7 @@ module.exports = {
             });
           }
           else {
-            res.status(500).send("ça marche pas");
+            res.status(500).send(rss);
           }
         });
 
