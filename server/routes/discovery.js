@@ -2,7 +2,7 @@ const discover = require('../helpers/rss-discovery.js');
 
 module.exports = {
 
-  discoverRoute: function(context) {
+  init: function(context) {
 
     context.app.get('/discover', function(req,res) {
       const url = req.param("url");
