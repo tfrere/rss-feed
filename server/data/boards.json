@@ -99,6 +99,20 @@
         "isDesc": false,
         "url": "http://feeds.feedburner.com/brad-frosts-blog",
         "articles": null
+      },
+      {
+        "uid": "15019563100",
+        "title": "LittleBigDetails",
+        "board": "design",
+        "type": "rss",
+        "refreshRate": "300",
+        "filter": null,
+        "isImage": false,
+        "isDouble": false,
+        "isAuthor": false,
+        "isDesc": false,
+        "url": "http://littlebigdetails.com/rss",
+        "articles": null
       }
     ]
   },
@@ -230,6 +244,30 @@
         "isAuthor": false,
         "isDesc": true,
         "url": "https://www.reddit.com/r/spacex/comments/590wi9/i_am_elon_musk_ask_me_anything_about_becoming_a/.rss",
+        "articles": null
+      }
+    ]
+  }
+  ,
+  {
+    "title": "rss",
+    "feeds": [
+      {
+        "uid": "1501956345",
+        "title": "Banana",
+        "type": "twitter",
+        "board": "tech",
+        "refreshRate": "20",
+        "search": "banana",
+        "articles": null
+      },
+      {
+        "uid": "1501956345",
+        "title": "Trololo",
+        "type": "twitter",
+        "board": "tech",
+        "refreshRate": "20",
+        "search": "trolololo",
         "articles": null
       }
     ]
