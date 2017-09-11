@@ -1,0 +1,29 @@
+http://musicforprogramming.net/rss.php
+https://www.franceculture.fr/emissions
+
+# Science
+http://science.sciencemag.org/rss/current.xml
+http://science.sciencemag.org/rss/twis.xml
+http://science.sciencemag.org/rss/ec.xml
+http://science.sciencemag.org/rss/podcast.xml
+http://science.sciencemag.org/rss/express.xml
+http://science.sciencemag.org/rss/news_current.xml
+
+http://stke.sciencemag.org/rss/current.xml
+http://stke.sciencemag.org/rss/podcast.xml
+
+http://stm.sciencemag.org/rss/current.xml
+http://advances.sciencemag.org/rss/current.xml
+http://immunology.sciencemag.org/rss/current.xml
+http://robotics.sciencemag.org/rss/current.xml
+
+https://news.google.com/news/rss/?ned=fr&hl=fr
+
+
+https://www.reddit.com/r/spacex/comments/590wi9/i_am_elon_musk_ask_me_anything_about_becoming_a/.rss
+
+# Podcasts
+https://designbetter.libsyn.com/rss
+
+# Ui Details
+http://littlebigdetails.com/rss

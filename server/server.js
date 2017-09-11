@@ -2,11 +2,7 @@ const bodyParser = require('body-parser');
 const jsonfile = require('jsonfile');
 const cors = require('cors');
 
-const serverConfig = {
-  configFile: "./data/config.json",
-  boardsFile: "./data/boards.json",
-  isFakeData: false
-};
+let serverConfig = jsonfile.readFileSync("./server-config.json");
 
 let app = require('express')();
 let http = require('http').Server(app);
