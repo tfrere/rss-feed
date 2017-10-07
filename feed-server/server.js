@@ -1,5 +1,16 @@
 const Feed = require('feed')
+const bodyParser = require('body-parser');
+const jsonfile = require('jsonfile');
+const moment = require('moment');
 
+const fakeData = require('./helpers/fakeData.js');
+
+let app = require('express')();
+let http = require('http').Server(app);
+app.set('port', 5002);
+
+
+app.use(bodyParser.json());
 
 let feed = new Feed({
   title: 'Feed Title',
@@ -22,51 +33,11 @@ let feed = new Feed({
   }
 })
 
-feed.addCategory('Technologie')
+feed.addCategory('Technologie');
+
+const posts = fakeData.generateFeed(20);
 
 
-const posts = [
-  {
-    title: "toto",
-    url: "http://toto.fr",
-    descrition: "totototo",
-    content: "titititi",
-    date: new Date(),
-    image: "http://tfrere.fr/tamere.jpg"
-  },
-  {
-    title: "toto1",
-    url: "http://toto.fr",
-    descrition: "totototo",
-    content: "titititi",
-    date: new Date(),
-    image: "http://tfrere.fr/tamere.jpg"
-  },
-  {
-    title: "toto2",
-    url: "http://toto.fr",
-    descrition: "totototo",
-    content: "titititi",
-    date: new Date(),
-    image: "http://tfrere.fr/tamere.jpg"
-  },
-  {
-    title: "toto3",
-    url: "http://toto.fr",
-    descrition: "totototo",
-    content: "titititi",
-    date: new Date(),
-    image: "http://tfrere.fr/tamere.jpg"
-  },
-  {
-    title: "toto4",
-    url: "http://toto.fr",
-    descrition: "totototo",
-    content: "titititi",
-    date: new Date(),
-    image: "http://tfrere.fr/tamere.jpg"
-  }
-]
 
 posts.forEach(post => {
   feed.addItem({
@@ -98,11 +69,69 @@ posts.forEach(post => {
   })
 })
 
+setInterval(function() {
+  const newDate = moment(new Date());
+  const post = fakeData.generateItem(newDate);
+  feed.addItem({
+    title: post.title,
+    id: post.url,
+    link: post.url,
+    description: post.description,
+    content: post.content,
+    author: [{
+      name: 'Jane Doe',
+      email: 'janedoe@example.com',
+      link: 'https://example.com/janedoe'
+    }, {
+      name: 'Joe Smith',
+      email: 'joesmith@example.com',
+      link: 'https://example.com/joesmith'
+    }],
+    contributor: [{
+      name: 'Shawn Kemp',
+      email: 'shawnkemp@example.com',
+      link: 'https://example.com/shawnkemp'
+    }, {
+      name: 'Reggie Miller',
+      email: 'reggiemiller@example.com',
+      link: 'https://example.com/reggiemiller'
+    }],
+    date: post.date,
+    image: post.image
+  })
+}, 1500);
+
 feed.addContributor({
   name: 'Johan Cruyff',
   email: 'johancruyff@example.com',
   link: 'https://example.com/johancruyff'
-})
-
+});
 
 console.log(feed.rss2());
+
+
+
+app.get('/rss', function(req,res) {
+    if(feed)
+      return res.status(200).send(feed.rss2());
+    else
+      console.log("No feed.");
+});
+
+app.get('/atom', function(req,res) {
+    if(feed)
+      return res.status(200).send(feed.atom1());
+    else
+      console.log("No feed.");
+});
+
+app.get('/json', function(req,res) {
+    if(feed)
+      return res.status(200).send(feed.json1());
+    else
+      console.log("No feed.");
+});
+
+http.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});
